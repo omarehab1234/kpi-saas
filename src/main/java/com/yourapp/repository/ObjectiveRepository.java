@@ -13,8 +13,7 @@ import com.yourapp.model.entity.Objective;
 
 // @Repository
 public interface ObjectiveRepository extends JpaRepository<Objective, UUID> {
-  
-    boolean existsByTenantIdAndDepartment_Id(UUID tenantId, UUID departmentId);
+
     // Safe single lookup (edit, archive, delete): only within the tenant
     Optional<Objective> findByIdAndTenantId(UUID id, UUID tenantId);
 

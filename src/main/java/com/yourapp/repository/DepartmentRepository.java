@@ -12,10 +12,6 @@ import com.yourapp.model.entity.Department;
 public interface DepartmentRepository extends JpaRepository<Department, UUID> {
 
     // All departments of one company, sorted by name
-
-    List<Department> findAllByTenantId(UUID tenantId);
-
-    boolean existsByTenantIdAndName(UUID tenantId, String name);
     List<Department> findAllByTenantIdOrderByNameAsc(UUID tenantId);
 
     // Safe single lookup: returns the department only if it belongs to this tenant
