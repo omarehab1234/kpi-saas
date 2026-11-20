@@ -41,7 +41,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     List<User> findByTenantIdAndStatus(UUID tenantId, UserStatus status);
 
     List<User> findByTenantIdAndDepartmentId(UUID tenantId, UUID departmentId);
-
+    boolean existsByTenantIdAndDepartment_Id(UUID tenantId, UUID departmentId);
     List<User> findByTenantIdAndDepartmentIdAndStatus(UUID tenantId, UUID departmentId, UserStatus status);
 
 
