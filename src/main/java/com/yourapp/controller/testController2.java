@@ -1,5 +1,5 @@
 package com.yourapp.controller;
 
-public class testController {
+public class testController2 {
     
 }
