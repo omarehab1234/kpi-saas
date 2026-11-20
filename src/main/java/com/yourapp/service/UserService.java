@@ -7,8 +7,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.yourapp.dto.auth.LoginRequest;
+import com.yourapp.dto.auth.LoginResponse;
 import com.yourapp.dto.auth.RegisterRequest;
 import com.yourapp.model.entity.User;
+import com.yourapp.model.enums.UserStatus;
 import com.yourapp.repository.UserRepository;
 
 @Service
@@ -24,7 +27,9 @@ public class UserService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
-
+    // ==============================
+    // register, get, update, delete user
+    // ==============================
     @Transactional
     public User register(RegisterRequest request) {
 
@@ -96,5 +101,35 @@ public class UserService {
         User user = getUserById(id);
 
         userRepository.delete(user);
+    }
+
+    // ==============================
+    // Authentication Login
+    // ==============================
+    public LoginResponse login(LoginRequest request) {
+
+    User user = userRepository.findByEmail(request.getEmail())
+            .orElseThrow(() ->
+                    new RuntimeException("Invalid email or password"));
+
+    if (user.getStatus() != UserStatus.ACTIVE) {
+        throw new RuntimeException("User account is not active");
+    }
+
+    if (!passwordEncoder.matches(
+            request.getPassword(),
+            user.getPasswordHash())) {
+
+        throw new RuntimeException("Invalid email or password");
+    }
+
+    return new LoginResponse(
+            user.getId(),
+            user.getFirstName(),
+            user.getLastName(),
+            user.getEmail(),
+            user.getRole().name(),
+            "Login successful"
+        );
     }
 }
